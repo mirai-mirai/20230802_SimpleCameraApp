@@ -4,3 +4,41 @@
 ストップボタン：カメラ停止
 セレクト：カメラデバイスを選択する
 
+実装完了
+
+https://github.com/mirai-mirai/20230802_SimpleCameraApp
+
+pagesで公開
+
+publicにする必要がある
+どうやってPublicにする？？
+
+Settings => Danger Zone => Change repository visibility
+
+Pagesからdocsを有効にする
+
+docsフォルダ作成する
+
+docsフォルダにコンパイルするようにする
+vite.config.tsの修正
+
+ビルド後にpublishする
+
+自動化できないか？？
+
+下記の通り修正してビルドしてSynsする
+export default defineConfig({
+  // github pagesの変な仕様（ルートが１つ上）に対応する
+  base: '/20230802_SimpleCameraApp/',
+  plugins: [vue()],
+  build: {
+    outDir: 'docs', // ビルド出力先を変更
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name]-[hash][extname]',
+        chunkFileNames: '[name]-[hash].js', // JSをルートに出力
+        entryFileNames: '[name]-[hash].js', // JSをルートに出力
+      },
+    },
+  },
+})
