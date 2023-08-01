@@ -123,3 +123,9 @@ Ctrl+P => Open keybindings JSONでファイル開いて以下を追加するだ�
 
 本当はgithubのSyncもやりたいけど
 
+git pushでいけた？？？
+
+じゃあ、そのコマンドをpackage.jsonにかいておけばよいか？？
+
+いちおうgithubを確認してみる
+
