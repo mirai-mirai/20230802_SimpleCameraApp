@@ -42,3 +42,84 @@ export default defineConfig({
     },
   },
 })
+
+ビルドコマンドをf5に割り当てる
+
+keybindings.jsonに以下を書けばよい
+{
+    "key": "ctrl+f5",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+        "text": "npm run build\r"
+    },
+},
+
+To find keybindings.json. Open command pallete (Usually ctrl + shift + P or cmd + shift + P) then look for "Preferences: Open Keyboard Shortcuts (JSON)". Make sure it's the one with (JSON). 
+
+それかこのやり方
+
+.vscode/tasks.json
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "npm run build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
+
+.vscode/keybindings.json
+File > Preferences > Keyboard Shortcuts
+
+[
+    {
+        "key" : "ctrl+s",
+        "command" : "workbench.action.tasks.build"
+    }
+]
+
+
+Ctrl+P => Open keybindings JSONでファイル開いて以下を追加するだけでOK
+    {
+        "key": "Ctrl+Shift+s",
+        "command": "workbench.action.tasks.build",
+    }
+    
+毎回ビルドコマンドを選ぶのが面倒やけど
+
+自動で.vscode/tasks.jsonが生成された？？
+自分で作った？？
+
+
+消してみるか
+
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build",
+			"detail": "vue-tsc && vite build"
+		}
+	]
+}
+消してみた
+
+
+普通に動いてる！！
+いらんかった。
+
+結局keybind設定するだけでOKやった
+
+本当はgithubのSyncもやりたいけど
+
