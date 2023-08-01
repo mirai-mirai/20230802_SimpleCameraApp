@@ -28,12 +28,23 @@ window.onload = async () => {
 </script>
 
 <template>
+  <h1>Simple Camera</h1>
+  <h5>-- T.shiozaki 2023/8/2 --</h5>
+
   <button ref="$startBtn">start</button>
   <button ref="$stopBtn">stop</button> <br>
   <video ref="$video" autoplay></video>
 </template>
 
 <style scoped>
+h1 {
+  margin-bottom: 0;
+}
+
+h5 {
+  margin-top: 0;
+}
+
 video {
   width: 320px;
   height: auto;
