@@ -19,13 +19,13 @@ const startVideo = async () => {
 const stopVideo = () => {
   if (!stream) return
   stream.getTracks().forEach(track => track.stop())
-  
+
   $video.value!.pause()
   $video.value!.srcObject = null
 }
 
 const getDevices = async () => {
-  const devices = (await navigator.mediaDevices.enumerateDevices())
+  const devices = await navigator.mediaDevices.enumerateDevices()
   $devices.value = devices.filter(({ kind }) => kind === 'videoinput');
   selectedDevId.value = $devices.value[0].deviceId
 }
@@ -37,7 +37,6 @@ const changeDevice = () => {
 }
 
 window.onload = async () => {
-  console.log('window.onload')
   $startBtn.value!.addEventListener('click', startVideo)
   $stopBtn.value!.addEventListener('click', stopVideo)
   getDevices()
