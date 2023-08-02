@@ -146,4 +146,77 @@ git syncは自動でできそう
 
 そして決めたやり方で更新できるかを確認する
 
+ビルド、コミット、プッシュの順番だから、
+プッシュは別のコマンドにしておいた方がよいか
+
+それかコミットのタイミングで同時に手動でプッシュするか
+
+ビルドだけキーバインドできたからそれでよしとするか
+
+たぶん公開できてない気がする
+
+できてた！！！
+
+まあ、これでよいか
+
+デバイス選択機能をつけるか
+
+ラジオボタンでデバイスを選ぶようにするか
+
+以下で取得できる。
+const devices = (await navigator.mediaDevices.enumerateDevices());
+
+kind
+videoinputまたはaudioinputが設定されます。
+deviceId
+デバイスを識別するIDです。使用するカメラを指定する際に使用します。
+label
+デバイスの名前です。ユーザにデバイスを選択させる際の選択肢として表示します。
+
+種類を指定するには以下を使う：
+const devices = (await navigator.mediaDevices.enumerateDevices())
+    .filter((device) => device.kind === 'videoinput');
+
+
+デバイスを開くには以下のようにする。
+const media = await navigator.mediaDevices.getUserMedia({
+  video: true,
+  video: {
+    deviceId: 選択したdeviceId,
+  },
+  audio: false,
+});
+
+
+データ取得できた：
+[
+    {
+        "deviceId": "bc0c7713cd0581b48eba26541784f94385d3fab9e90c1038c4444b003258bcfe",
+        "kind": "videoinput",
+        "label": "USB2.0 HD UVC WebCam (13d3:56eb)",
+        "groupId": "b7d39e02ad8d56ae789de5c8af0245725beefa5f9cd830a10bcbce934280125e"
+    },
+    {
+        "deviceId": "cfa7bed8471e0d8ebc25ff880c93ff6b914fba11ccae3793c0d34c69f310cb87",
+        "kind": "videoinput",
+        "label": "Avatarify Camera",
+        "groupId": "301ba36248bcf22948dfde0e0cf63bde400646db6eed2848565383739d9e1120"
+    }
+]
+
+refにしてradioで選べるようにするか
+
+<input type="radio" id="one" value="One" v-model="picked" />
+<label for="one">One</label>
+
+<input type="radio" id="two" value="Two" v-model="picked" />
+<label for="two">Two</label>
+
+結局以下でばっちり動いた：
+<div v-for="{ deviceId, label } in $devices" :key="deviceId">
+  <input type="radio" v-model="selectedDevId" :value="deviceId" @change="changeDevice">
+  <label>{{ label }}</label>
+</div>
+
+完成した。後はこのサイトを使って検証するだけ
 
