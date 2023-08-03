@@ -220,3 +220,38 @@ refにしてradioで選べるようにするか
 
 完成した。後はこのサイトを使って検証するだけ
 
+  console.log(navigator.mediaDevices.getUserMedia)
+で確認したら、
+ƒ getUserMedia() { [native code] }
+
+デフォルトの関数を置き換えられてない
+moduleだから他のソースの書き換えができない？？？？
+
+content_scriptsをmoduleじゃないようにした方がよい？？？
+
+そもそもこっちでmediaDevicesの値を変更できるか確認してみる
+
+Camera.vueでの置き換えには成功してる
+
+content_scripts側での処理：
+navigator.mediaDevices.getUserMedia =
+  async (constraints?: MediaStreamConstraints) => {
+    console.log("getUserMedia")
+    const captureStream = canvas.captureStream();
+    if (!captureStream) throw new Error("could not capture stream");
+    captureStream.getTracks().forEach(track => {
+      track.onended = () => console.log("stopped");
+    });
+    return captureStream;
+  }
+
+Camera.vue側での確認：
+console.log(navigator.mediaDevices.getUserMedia)
+⇒　ƒ getUserMedia() { [native code] }
+
+getUserMediaが置き換えられてない
+
+デモのコードを参考までに見てみるか
+
+
+

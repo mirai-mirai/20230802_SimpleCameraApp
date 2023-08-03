@@ -4,6 +4,8 @@ import { ref } from 'vue'
 const $video = ref<HTMLVideoElement>()
 const $startBtn = ref<HTMLButtonElement>()
 const $stopBtn = ref<HTMLButtonElement>()
+const $refreshBtn = ref<HTMLButtonElement>()
+const $virtualBtn = ref<HTMLButtonElement>()
 const $devices = ref<MediaDeviceInfo[]>([])
 const selectedDevId = ref<string | null>(null)
 let stream: MediaStream
@@ -11,6 +13,20 @@ let stream: MediaStream
 const startVideo = async () => {
   const deviceId = selectedDevId.value as ConstrainDOMString
   const cfg: MediaStreamConstraints = { video: { deviceId }, audio: false }
+  stream = await navigator.mediaDevices.getUserMedia(cfg)
+  $video.value!.srcObject = stream
+  $video.value!.play()
+}
+const startVirtual = async () => {
+  console.log('startVirtual')
+  const deviceId = 'virtual'
+  const cfg: MediaStreamConstraints = { video: { deviceId }, audio: false }
+  console.log(navigator.mediaDevices.getUserMedia)
+  // navigator.mediaDevices.getUserMedia = async (constraints?: MediaStreamConstraints | undefined) => {
+  //   console.log("getUserMedia")
+  //   console.log(constraints)
+  //   return new MediaStream()
+  // }
   stream = await navigator.mediaDevices.getUserMedia(cfg)
   $video.value!.srcObject = stream
   $video.value!.play()
@@ -39,6 +55,8 @@ const changeDevice = () => {
 window.onload = async () => {
   $startBtn.value!.addEventListener('click', startVideo)
   $stopBtn.value!.addEventListener('click', stopVideo)
+  $refreshBtn.value!.addEventListener('click', getDevices)
+  $virtualBtn.value!.addEventListener('click', startVirtual)
   getDevices()
 }
 
@@ -47,13 +65,15 @@ window.onload = async () => {
 <template>
   <h1>Simple Camera</h1>
   <h5>-- T.shiozaki 2023/8/2 --</h5>
-  Select Camera:
+  Select Camera:<button ref="$refreshBtn">refresh</button>
   <div v-for="{ deviceId, label } in $devices" :key="deviceId">
     <input type="radio" v-model="selectedDevId" :value="deviceId" @change="changeDevice">
     <label>{{ label }}</label>
   </div>
+  <button ref="$virtualBtn">virtual</button>
   <button ref="$startBtn">start</button>
-  <button ref="$stopBtn">stop</button> <br>
+  <button ref="$stopBtn">stop</button>
+  <br>
   <video ref="$video" autoplay></video>
 </template>
 
